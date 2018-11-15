@@ -17,7 +17,7 @@ cp ~/.bashrc ~/.bashrc.bak
 
 cat > fkjshdkfhwldf.txt <<%EOF%
 
-# start ssh-agent for git and adid non-standard key
+# start ssh-agent for git and add non-standard key
 eval "$(ssh-agent -s)"
 ssh-add /p/home/$USER/.ssh/id_rsa_git
 %EOF%
