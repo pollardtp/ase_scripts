@@ -1,0 +1,22 @@
+#!/bin/bash
+
+echo "Assumes you already have conda3, ASE, and git"
+
+cp ~/.bashrc ~/.bashrc.bak
+
+cat > fkjshdkfhwldf.txt <<%EOF%
+
+# start ssh-agent for git and add non-standard key
+eval "$(ssh-agent -s)"
+ssh-add /p/home/$USER/.ssh/id_rsa_git
+%EOF%
+
+cat ~/.bashrc fkjshdkfhwldf.txt > ~/.bashrc
+rm fkjshdkfhwldf.txt
+source ~/.bashrc
+
+echo "Now run... (passphrase not necessary, just hit RETURN twice)"
+echo "ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa_git -C 'pollartpuc@gmail.com'"
+echo "Clip contents of ~/.ssh/id_rsa_git.pub [IMPORTANT: grab PUBLIC key ONLY, .pub]"
+echo "Add to github in Settings."
+
