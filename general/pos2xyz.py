@@ -9,7 +9,7 @@ dir_ = os.getcwd()
 
 for file_ in glob.glob('%s/*-pos-*.xyz' % dir_):
    filename_, fileext_ = os.path.splitext(file_) # fileext_ carries the .
-   fileroot_ = filename_.split('-pos') # second part is useless now
+   fileroot_, filescrap_ = filename_.split('-pos') # second part is useless now
    inp_ = ase.io.read('%s%s' % (filename_, fileext_) , format='xyz', index=-1)
    out_ = ase.io.write('%s-trim.xyz' % (fileroot_), inp_, format='xyz')
 
