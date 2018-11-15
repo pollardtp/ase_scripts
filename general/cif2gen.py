@@ -1,7 +1,6 @@
 #!/p/home/teep/.local_programs/conda3/bin/python
 
 import ase, sys
-from ase import Atom, Atoms
 import ase.io
 
 coords = ase.io.read(sys.argv[1], format='cif')
