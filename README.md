@@ -1,5 +1,7 @@
 # README
 
+[ace-pi-lot], *humor*
+
 Python source code for using the atomic simulation environment (ASE) to accomplish various tasks from converting formats to setting up
 calculations.
 
