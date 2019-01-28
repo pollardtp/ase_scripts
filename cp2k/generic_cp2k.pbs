@@ -1,0 +1,39 @@
+#PBS -A <scrubbed>
+#PBS -N cp2k.genericname
+#PBS -l walltime=24:00:00,select=16:ncpus=40:mpiprocs=40
+#PBS -l job_type=MPI
+#PBS -l place=scatter:excl
+#PBS -q debug
+#PBS -S /bin/bash
+#PBS -j oe
+#PBS -m bae
+#PBS -M <scrubbed>
+
+ulimit
+module list
+
+module unload mpi/sgimpt
+module unload compiler/intel/2017.1.132
+module load compiler/gcc/7.1.0
+module load mpi/sgimpt/2.15
+module load costinit
+module load fftw3-mpi/gnu/sgimpt/3.3.5
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/p/app/unsupported/petccm/lib_7.1/elpa-2017.11.001/lib
+
+export I_MPI_PIN_DOMAIN=omp
+export OMP_NUM_THREADS=1
+
+export CP2KHOME=/p/app/unsupported/petccm/CP2K/cp2k_trunk_18330/exe/Cent-elpa-gf_mkl16_smm
+export DATAHOME=/p/home/teep/.local_programs/cp2k.binary
+filname=genericname
+
+mkdir $WORKDIR/$PBS_JOBID
+cd $PBS_O_WORKDIR
+cp $filname\.inp $filname\.cif $WORKDIR/$PBS_JOBID
+cp -rp $DATAHOME/data $WORKDIR/$PBS_JOBID
+cd $WORKDIR/$PBS_JOBID
+mpiexec_mpt -n 640 $CP2KHOME/cp2k.popt $filname\.inp > $filname\.log
+cp *.restart *.xyz *.wfn *.log *.kp $PBS_O_WORKDIR
+rm -r $WORKDIR/$PBS_JOBID
+
