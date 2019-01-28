@@ -33,7 +33,7 @@ cd $PBS_O_WORKDIR
 cp $filname\.inp $filname\.cif $WORKDIR/$PBS_JOBID
 cp -rp $DATAHOME/data $WORKDIR/$PBS_JOBID
 cd $WORKDIR/$PBS_JOBID
-mpiexec_mpt -n 640 $CP2KHOME/cp2k.popt $filname\.inp > $filname\.log
-cp *.restart *.xyz *.wfn *.log *.kp $PBS_O_WORKDIR
+mpiexec_mpt -np 640 $CP2KHOME/cp2k.popt $filname\.inp > $filname\.log
+cp *-1.restart *.xyz *.wfn *.log *.dat *.ener $PBS_O_WORKDIR
 rm -r $WORKDIR/$PBS_JOBID
 
