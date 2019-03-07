@@ -10,5 +10,5 @@ Source is written with the following practices,
   1) Variables labeled as `foo_` with an underscore appended to their end to remain obviously distinct
   2) Where possible, written to be run in any directory (the Python script does not need to be located in `cwd`)
   3) glob is used to chew up all files in a directory and make whatever modifications are called
-  4) Written to Python3 standards. Not guaranteed to work with Python2, but should mostly be OK
+  4) Written to Python3 standards. Not guaranteed to work with Python2!
   5) Maximum functionality with VASP, CP2K, and DFTB+
