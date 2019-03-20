@@ -17,7 +17,5 @@ for file_ in glob.glob('%s/*-trim.xyz' % dir_):
    fileroot_, filescrap_ = filename_.split('-trim') # second part is useless now
    inp_ = ase.io.read('%s%s' % (filename_, fileext_) , format='xyz')
    inp_.set_cell([a, b, c, alpha, beta, gamma])
-   sorted_ = ase.build.sort(inp_)
-   inp_ = sorted_
-   out_ = ase.io.write('%s-opt.vasp' % (fileroot_), inp_, format='vasp', direct=True)
+   out_ = ase.io.write('%s-opt.vasp' % (fileroot_), inp_, format='vasp', direct=True, sort=True, vasp5=True)
 
