@@ -1,0 +1,28 @@
+#
+# 11H2O:2Li:1Zn:4Cl for AMOEBA (200 FU)
+#
+
+tolerance 3.4
+filetype xyz
+output h2o_2200_li_400_zn_200_cl_800_amoeba_pack.xyz
+
+structure amoeba.xyz
+  number 2200
+  inside box 0. 0. 0. 60 60 60
+end structure
+
+structure cl.xyz
+  number 800
+  inside box 0. 0. 0. 60 60 60
+end structure
+
+structure li.xyz
+  number 400
+  inside box 0. 0. 0. 60 60 60
+end structure
+
+structure zn.xyz
+  number 200
+  inside box 0. 0. 0. 60 60 60
+end structure
+
