@@ -14,6 +14,7 @@ for file_ in glob.glob('%s/*.xyz' % dir_):
     calc_ = Gaussian(mem='64GB', nproc='32', opt='tight, MaxCycles=360, recalcfc=20', scrf='cpcm, solvent=generic, read', 
                      scf='tight', integral='ultrafine', freq='analytic', method='UM05-2X', basis='6-31+G(d,p)', symmetry='none',
                      addsec="Eps=8\nEpsInf=1.4")
+
     inp_.set_calculator(calc_)
     calc_.write_input(inp_)
     os.system("mv g09.com %s.gjf" % (filename_))
