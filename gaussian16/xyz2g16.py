@@ -10,7 +10,7 @@ dir_ = os.getcwd()
 for file_ in glob.glob('%s/*.xyz' % dir_):
     filename_, fileext_ = os.path.splitext(file_) # fileext_ carries the .
     inp_ = ase.io.read('%s%s' % (filename_, fileext_) , format='xyz')
-    filter_filename_ = re.sub(r'[.]','_', filename_)
+    filter_filename_ = re.sub(r'[.]','_', filename_) # HPC script cuts filename at first .
 
     magmom = []
 
