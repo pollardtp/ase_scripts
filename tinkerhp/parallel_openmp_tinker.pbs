@@ -1,0 +1,34 @@
+#PBS -A <scrubbed>
+#PBS -N GauTink.licl
+#PBS -l walltime=168:00:00,select=1:ncpus=48
+#PBS -q standard
+#PBS -S /bin/bash
+#PBS -j oe
+#PBS -m bae
+#PBS -M <scrubbed>
+
+mkdir $WORKDIR/$PBS_JOBID
+cd /p/home/teep/arl_licl_gaussian_q/licl-tinker/runs
+cp -r 1/ 2/ 3/ $WORKDIR/$PBS_JOBID
+cp /p/home/teep/arl_licl_gaussian_q/tinker8.6gaussPME/bin/dynamic_gau $WORKDIR/$PBS_JOBID
+cd $WORKDIR/$PBS_JOBID
+
+source ~/.bashrc
+module swap compiler/intel/2018.1.163 gcc/8.2.0
+
+export I_MPI_PIN_DOMAIN=omp
+export OMP_NUM_THREADS=16
+
+# set function
+run_tinker() {
+ ./dynamic_gau licl 250000 2.0 5.0 4 298.15 1.0 >> licl_npt.log
+}
+
+# export to system
+export -f run_tinker
+
+# execute
+seq 1 3 | parallel 'cp dynamic_gau {} && cd {} && run_tinker && cp *.dyn licl_npt.dyn_bak && cp *.dyn *.dyn_bak *.log *.arc *.uind /p/home/teep/arl_licl_gaussian_q/licl-tinker/runs/{}'
+
+rm -r $WORKDIR/$PBS_JOBID
+
