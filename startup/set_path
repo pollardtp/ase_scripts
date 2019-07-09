@@ -1,0 +1,2 @@
+# add git repo to PATH
+for dir in /p/home/teep/.local_programs/asepylot/*; do PATH="$PATH:$dir"; done
