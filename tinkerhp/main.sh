@@ -36,7 +36,9 @@ if [ ! -f pdb2sort.py ]; then
     mv $file\.xyz $file\.xyz_orig
     ./set_tink_atom_type.sh $file\.xyz_orig > $file\.xyz
     boxbox=`grep CRYST1 $file\.pdb | awk '{print $2}'`
-    sed s~"BOXBOX"~"$boxbox"~g generic.key > $file\.key
+    boxboy=`grep CRYST1 $file\.pdb | awk '{print $3}'`
+    boxboz=`grep CRYST1 $file\.pdb | awk '{print $4}'`
+    sed s~"BOXBOX"~"$boxbox"~g generic.key | sed s~"BOXBOY"~"$boxboy"~g | sed s~"BOXBOZ"~"$boxboz"~g > $file\.key
     #tar cf $file\.tar $file\.xyz $file\.key
   done
 fi
@@ -58,8 +60,9 @@ if [ -f pdb2sort.py ]; then
     mv $file\-sorted.xyz $file\.xyz_orig
     ./set_tink_atom_type.sh $file\.xyz_orig > $file\.xyz
     boxbox=`grep CRYST1 $file\.pdb | awk '{print $2}'`
-    sed s~"BOXBOX"~"$boxbox"~g generic.key > $file\.key
+    boxboy=`grep CRYST1 $file\.pdb | awk '{print $3}'`
+    boxboz=`grep CRYST1 $file\.pdb | awk '{print $4}'`
+    sed s~"BOXBOX"~"$boxbox"~g generic.key | sed s~"BOXBOY"~"$boxboy"~g | sed s~"BOXBOZ"~"$boxboz"~g > $file\.key
     #tar cf $file\.tar $file\.xyz $file\.key
   done
 fi
-
