@@ -60,6 +60,7 @@ for file_ in glob.glob('%s/*.pdb' % dir_):
                     break
                 else:
                     print ('Something is amiss - check that your PDB begins with oxygen.')
+                    break
     else:
         out_ = ase.io.write('%s-sorted.pdb' % (filename_), inp_sorted_, format='proteindatabank')
 
