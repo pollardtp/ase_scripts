@@ -1,0 +1,15 @@
+#!/bin/bash
+
+for i in *; do
+ if [ -d $i ]; then # check if dir
+  if [ -f $i/*.ener ]; then # check if ener
+   tail -n1 $i/*.ener | awk '{ s=""; for (i=2; i<=NF; i++) s = s $i " "; print s }' > $i\.neb.dat
+   awk '{ for (i=(NF/2)+2; i<=NF+1; i++) { printf "%s ", $i } }' $i\.neb.dat > tmp.dist
+   awk '{ for (i=1; i<=(NF/2)+1; i++) { printf "%s ", $i } }' $i\.neb.dat > tmp.engy
+   c1=`awk '{ for (i=0; i<=NF; i++) { if (i == 0) { sum=0; printf "%10.8f\n", sum } if (i == 1) { sum+=$i; printf "%10.8f\n", sum } if (i >= 2) { sum+=$i; printf "%10.8f\n", sum } } }' tmp.dist; rm tmp.dist`
+   c2=`awk '{ for (i=1; i<=NF; i++) { printf "%10.8f\n", 27.2114*($i-$1) } }' tmp.engy; rm tmp.engy`
+   paste <(echo $c1 | ruby -e'puts readlines.map(&:split).transpose{|x|x*" "}') <(echo $c2 | ruby -e'puts readlines.map(&:split).transpose{|x|x*" "}') > $i\.neb.dat
+  fi
+ fi
+done
+
