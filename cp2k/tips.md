@@ -17,12 +17,14 @@ in cell optimizations, I find that it locks up after a few optimization steps an
 1st Solution: Switch to the Pulay/DIIS method. It may take a few extra SCF cycles to get to the solution though and can be led
 astray for poor geometries so as to never converge. Also falls prey to spurious R_COND errors.
 
-Fallback solution: Run Kerker a few cycles, then switch to Pulay.
+Fallback solution: Run Kerker a few cycles so that Pulay will be stable, then switch to Pulay. I find that Kerker often struggles
+with SCF convergence on the initial geometry (even pretty reasonable ones). The multisecant method, in my experience, is pretty
+much useless. Clearly I do not know how to finely tune it to work well.
 
 ```
    &MIXING  T
     METHOD  PULAY_MIXING
-    N_SIMPLE_MIX  5
+    N_SIMPLE_MIX  5 # this requests Kerker for 5 SCF cycles, technically NoDiag + 4 Kerker
     PULAY_ALPHA  0.02
     NMIXING  10
     NBUFFER  8
