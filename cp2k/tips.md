@@ -25,7 +25,7 @@ much useless. Clearly I do not know how to finely tune it to work well.
    &MIXING  T
     METHOD  PULAY_MIXING
     N_SIMPLE_MIX  5 # this requests Kerker for 5 SCF cycles, technically NoDiag + 4 Kerker
-    PULAY_ALPHA  0.02
+    PULAY_ALPHA  0.02 # actually a VASP recommendation for metals
     NMIXING  10
     NBUFFER  8
    &END MIXING
