@@ -1,4 +1,4 @@
-Narrowing energy differences per atom in materials with differing surface areas
+# Narrowing energy differences per atom in materials with differing surface areas
 -----
 
 A basic template procedure
@@ -9,4 +9,29 @@ A basic template procedure
 - If CP2K hangs during the geometry optimization, reduce the k-point of the dimension with the greatest length by 1 and try again
 - Restore the k-point scheme if it was changed and compute the energy, report this one
 - Ex. (graphite with 96, 160, and 192 atoms) gives -155.130120, -155.130129, -155.130226 eV/atom following this method
+
+# Cell optimizations (or constant pressure simulations) with metals
+-----
+
+Problem: The Broyden method for converging SCF with Fermi smearing is quick and robust, making it an ideal choice. However,
+in cell optimizations, I find that it locks up after a few optimization steps and the calculation hangs (rests idle until walltime).
+
+1st Solution: Switch to the Pulay/DIIS method. It may take a few extra SCF cycles to get to the solution though and can be led
+astray for poor geometries so as to never converge. Also falls prey to spurious R_COND errors.
+
+Fallback solution: Run Kerker a few cycles, then switch to Pulay.
+
+   &MIXING  T
+
+    METHOD  PULAY_MIXING
+
+    N_SIMPLE_MIX  5
+
+    PULAY_ALPHA  0.02
+
+    NMIXING  10
+
+    NBUFFER  8
+
+   &END MIXING
 
