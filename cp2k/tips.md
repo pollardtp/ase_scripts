@@ -1,5 +1,4 @@
 # Narrowing energy differences per atom in materials with differing surface areas
------
 
 A basic template procedure
 - Cell optimization with gamma point sampling
@@ -11,7 +10,6 @@ A basic template procedure
 - Ex. (graphite with 96, 160, and 192 atoms) gives -155.130120, -155.130129, -155.130226 eV/atom following this method
 
 # Cell optimizations (or constant pressure simulations) with metals
------
 
 Problem: The Broyden method for converging SCF with Fermi smearing is quick and robust, making it an ideal choice. However,
 in cell optimizations, I find that it locks up after a few optimization steps and the calculation hangs (rests idle until walltime).
@@ -21,17 +19,13 @@ astray for poor geometries so as to never converge. Also falls prey to spurious 
 
 Fallback solution: Run Kerker a few cycles, then switch to Pulay.
 
+```
    &MIXING  T
-
     METHOD  PULAY_MIXING
-
     N_SIMPLE_MIX  5
-
     PULAY_ALPHA  0.02
-
     NMIXING  10
-
     NBUFFER  8
-
    &END MIXING
+```
 
