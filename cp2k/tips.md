@@ -13,13 +13,14 @@ A basic template procedure
 
 Problem: The Broyden method for converging SCF with Fermi smearing is quick and robust, making it an ideal choice. However,
 in cell optimizations, I find that it locks up after a few optimization steps and the calculation hangs (rests idle until walltime).
+I have only ever had this issue with the Broyden method.
 
 1st Solution: Switch to the Pulay/DIIS method. It may take a few extra SCF cycles to get to the solution though and can be led
 astray for poor geometries so as to never converge. Also falls prey to spurious R_COND errors.
 
 Fallback solution: Run Kerker a few cycles so that Pulay will be stable, then switch to Pulay. I find that Kerker often struggles
-with SCF convergence on the initial geometry (even pretty reasonable ones). The multisecant method, in my experience, is pretty
-much useless. Clearly I do not know how to finely tune it to work well.
+with SCF convergence on the initial geometry and (when things go wrong) will diverge after about 10 cycles or so. The multisecant 
+method is not recommended, at all.
 
 ```
    &MIXING  T
