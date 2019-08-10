@@ -10,3 +10,9 @@ for dir in /p/home/$USER/.local_programs/asepylot/*; do PATH="$PATH:$dir"; done
 
 # add functions library to Python path
 export PYTHONPATH=$PYTHONPATH:/p/home/$USER/.local_programs/asepylot/pylot_lite
+
+# command to update asepylot on machines without ssh-add
+update_asepylot () {
+ rm -rf $HOME/.local_programs/asepylot
+ git clone https://github.com/pollardtp/asepylot.git $HOME/.local_programs/asepylot
+}
