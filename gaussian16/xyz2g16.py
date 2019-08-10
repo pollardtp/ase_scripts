@@ -14,7 +14,7 @@ import os
 import re
 import sys
 
-import check_ase
+from require import check_ase
 check_ase()
 
 import ase
