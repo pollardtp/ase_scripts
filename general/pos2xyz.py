@@ -6,24 +6,12 @@ usage: python3 pos2xyz.py
 Uses ASE to dump final image of a CP2K trajectory in XYZ (XMOL) format.
 '''
 
-import pkg_resources
 import glob
 import os
 import sys
 
-from pkg_resources import DistributionNotFound, VersionConflict
-
-try:
-    pkg_resources.require("ase>=3.15.0") # pings recent ase
-except pkg_resources.DistributionNotFound:
-    print('Exiting: Atomic Simulation Environment not found.')
-    sys.exit()
-except pkg_resources.VersionConflict:
-    print('Exiting: Older version of ASE installed, please update.')
-    sys.exit()
-
-del sys.modules["pkg_resources"]
-del pkg_resources
+import check_ase
+check_ase()
 
 import ase
 from ase.io import read, write

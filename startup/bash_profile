@@ -7,3 +7,6 @@ ssh-add /p/home/$USER/.ssh/id_rsa_git
 
 # add entire git repo to PATH
 for dir in /p/home/$USER/.local_programs/asepylot/*; do PATH="$PATH:$dir"; done
+
+# add functions library to Python path
+export PYTHONPATH=$PYTHONPATH:/p/home/$USER/.local_programs/asepylot/pylot_lite
