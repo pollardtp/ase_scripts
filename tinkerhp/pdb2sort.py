@@ -1,29 +1,55 @@
-#!/p/home/teep/.local_programs/conda3/bin/python
+#!/usr/bin/env python3
 
-import ase, glob, os, sys
-import ase.io
-import ase.build
+'''
+usage: python3 pdb2sort.py
+
+Uses ASE to generate sort a PDB in a particular order - OHH, Cl, Li. Can be
+modified for other purposes.
+'''
+
+import pkg_resources
+import glob
+import os
+import sys
+
+from pkg_resources import DistributionNotFound, VersionConflict
+
+try:
+    pkg_resources.require("ase>=3.15.0") # pings recent ase
+except pkg_resources.DistributionNotFound:
+    print('Exiting: Atomic Simulation Environment not found.')
+    sys.exit()
+except pkg_resources.VersionConflict:
+    print('Exiting: Older version of ASE installed, please update.')
+    sys.exit()
+
+del sys.modules["pkg_resources"]
+del pkg_resources
+
+import ase
+from ase.io import read, write
+from ase.build import sort
 from ase import Atom, Atoms, neighborlist
 
-dir_ = os.getcwd()
+dir = os.getcwd()
 
 check = False
 
-for file_ in glob.glob('%s/*.pdb' % dir_):
-    filename_, fileext_ = os.path.splitext(file_) # fileext_ carries the .
-    inp_ = ase.io.read('%s%s' % (filename_, fileext_) , format='proteindatabank')
+for file in glob.glob('%s/*.pdb' % dir):
+    filename, fileext = os.path.splitext(file) # fileext carries the .
+    inp = read('%s%s' % (filename, fileext) , format='proteindatabank')
 
     # Here we want atom order to repeat units of OHH, OHH, ..., Cl, Li
     # sort and push hydrogen to end, else there are indexing issues
-    for atom in inp_:
+    for atom in inp:
         if ( atom.symbol == 'H' ):
-           atom.mass = 9999. 
+           atom.mass = 9999.
 
     # hydrogens are now last
-    inp_clean_ = ase.build.sort(inp_, tags = inp_.get_masses())
+    inp_clean = sort(inp, tags = inp.get_masses())
 
     # compute distances, save lists of indices - i_dex contains O and H
-    i_dex, j_dex, ij_dis = neighborlist.neighbor_list('ijd', inp_clean_, {('H', 'H'): 0.0, ('O', 'O'): 0.0, ('O', 'H'): 0.9}, self_interaction=False)
+    i_dex, j_dex, ij_dis = neighborlist.neighbor_list('ijd', inp_clean, {('H', 'H'): 0.0, ('O', 'O'): 0.0, ('O', 'H'): 0.9}, self_interaction=False)
 
     # tag each water with the index of the oxygen, the ith water
     for ith in range(len(i_dex)):
@@ -32,19 +58,19 @@ for file_ in glob.glob('%s/*.pdb' % dir_):
             inp_clean_[j_dex[ith]].tag = i_dex[ith]
 
     # tag the other atoms, just number them in the order you want to see them
-    for atom in inp_clean_:
+    for atom in inp_clean:
         if ( atom.symbol == 'Cl' ):
             atom.tag = 9999998
         if ( atom.symbol == 'Li' ):
             atom.tag = 9999999
 
     # sort the reindexed list by water molecule - now H index is > O index, proper order!
-    inp_sorted_ = ase.build.sort(inp_clean_, tags=inp_clean_.get_tags())
+    inp_sorted = build.sort(inp_clean, tags=inp_clean.get_tags())
 
     # give option for testing without writing anything
     if ( check == True ):
         prvO = -3
-        for atom in inp_sorted_:
+        for atom in inp_sorted:
             if ( atom.symbol == 'O' ):
                 loc = atom.index
                 res = loc - prvO
@@ -62,5 +88,4 @@ for file_ in glob.glob('%s/*.pdb' % dir_):
                     print ('Something is amiss - check that your PDB begins with oxygen.')
                     break
     else:
-        out_ = ase.io.write('%s-sorted.pdb' % (filename_), inp_sorted_, format='proteindatabank')
-
+        out = write('%s-sorted.pdb' % (filename), inp_sorted, format='proteindatabank')

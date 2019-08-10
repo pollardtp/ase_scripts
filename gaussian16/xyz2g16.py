@@ -1,33 +1,61 @@
-#!/p/home/teep/.local_programs/conda3/bin/python
+#!/usr/bin/env python3
 
-import ase, glob, os, re
-import ase.io
+'''
+usage: python3 cp2kneb2xyzmov.py foo1.xyz foo2.xyz ... fooN.xyz
+
+CP2K writes each image in an NEB calculation to its own XYZ (XMOL) file.
+This script uses ASE to read each image in and output the final snapshot
+from each file to a single file called trj.xyz that shows the optimized
+path when viewed.
+'''
+
+import pkg_resources
+import glob
+import os
+import re
+import sys
+
+from pkg_resources import DistributionNotFound, VersionConflict
+
+try:
+    pkg_resources.require("ase>=3.15.0") # pings recent ase
+except pkg_resources.DistributionNotFound:
+    print('Exiting: Atomic Simulation Environment not found.')
+    sys.exit()
+except pkg_resources.VersionConflict:
+    print('Exiting: Older version of ASE installed, please update.')
+    sys.exit()
+
+del sys.modules["pkg_resources"]
+del pkg_resources
+
+import ase
+from ase.io import read, write
 from ase import Atoms
 from ase.calculators.gaussian import Gaussian
 
-dir_ = os.getcwd()
+dir = os.getcwd()
 
-for file_ in glob.glob('%s/*.xyz' % dir_):
-    filename_, fileext_ = os.path.splitext(file_) # fileext_ carries the .
-    inp_ = ase.io.read('%s%s' % (filename_, fileext_) , format='xyz')
-    filter_filename_ = re.sub(r'[.]','_', filename_) # HPC script cuts filename at first .
+for file in glob.glob('%s/*.xyz' % dir):
+    filename, fileext = os.path.splitext(file) # fileext carries the .
+    inp = read('%s%s' % (filename, fileext) , format='xyz')
+    filter_filename = re.sub(r'[.]','_', filename) # HPC script cuts filename at first .
 
     magmom = []
 
-    for atom in inp_:
+    for atom in inp:
         if ( atom.symbol == 'O' ):
             magmom.append(0.5)
         else:
             magmom.append(0)
 
-    inp_.set_initial_magnetic_moments(magmom)
+    inp.set_initial_magnetic_moments(magmom)
 
-    calc_ = Gaussian(mem='64GB', nproc='32', opt='tight, MaxCycles=360', scrf='cpcm, solvent=generic, read', 
-                     scf='tight', integral='ultrafine', freq='analytic', method='UPBEPBE', basis='6-31+G(d)', 
+    calc = Gaussian(mem='64GB', nproc='32', opt='tight, MaxCycles=360', scrf='cpcm, solvent=generic, read',
+                     scf='tight', integral='superfine', freq='analytic', method='UPBEPBE', basis='6-31+G(d)',
                      symmetry='none', extra='empiricaldispersion=gd3bj', addsec="Eps=8\nEpsInf=1.96")
 
-    inp_.set_calculator(calc_)
-    calc_.write_input(inp_)
-    os.system("mv g09.com %s.gjf" % (filter_filename_))
+    inp.set_calculator(calc)
+    calc.write_input(inp)
+    os.system("mv g09.com %s.gjf" % (filter_filename))
     os.system("rm g09.ase")
-

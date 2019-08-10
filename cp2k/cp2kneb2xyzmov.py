@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 
 '''
-usage: python3 gen2cif.py
+usage: python3 cp2kneb2xyzmov.py foo1.xyz foo2.xyz ... fooN.xyz
 
-Uses ASE to convert a DFTB+ gen format file to a CIF format file.
+CP2K writes each image in an NEB calculation to its own XYZ (XMOL) file.
+This script uses ASE to read each image in and output the final snapshot
+from each file to a single file called trj.xyz that shows the optimized
+path when viewed.
 '''
 
 import pkg_resources
-import glob
-import os
 import sys
 
 from pkg_resources import DistributionNotFound, VersionConflict
@@ -28,9 +29,6 @@ del pkg_resources
 import ase
 from ase.io import read, write
 
-dir = os.getcwd()
-
-for file in glob.glob('%s/*.gen' % dir):
-   filename, fileext = os.path.splitext(infile) # fileext carries the .
-   inp = read('%s%s' % (filename, fileext) , format='gen')
-   out = write('%s.gen' % (filename), inp, format='cif')
+for frame in range(1,len(sys.argv)):
+    inp = read(sys.argv[frame], format='xyz', index='-1')
+    out = write('trj.xyz', inp, format='xyz', append='True')

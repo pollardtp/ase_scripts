@@ -31,4 +31,3 @@ export -f run_tinker
 seq 1 3 | parallel 'cp dynamic_gau {} && cd {} && run_tinker && cp *.dyn licl_npt.dyn_bak && cp *.dyn *.dyn_bak *.log *.arc *.uind /p/home/teep/arl_licl_gaussian_q/licl-tinker/runs/{}'
 
 rm -r $WORKDIR/$PBS_JOBID
-

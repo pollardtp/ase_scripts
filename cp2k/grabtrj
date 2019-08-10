@@ -3,9 +3,8 @@
 for i in *; do
  if [ -d $i ]; then
   if [ -f $i/*.ener ]; then
-   xyztrj2snp.py $i/$i\-pos-Replica_nr_1-1.xyz $i/$i\-pos-Replica_nr_2-1.xyz $i/$i\-pos-Replica_nr_3-1.xyz $i/$i\-pos-Replica_nr_4-1.xyz $i/$i\-pos-Replica_nr_5-1.xyz $i/$i\-pos-Replica_nr_6-1.xyz $i/$i\-pos-Replica_nr_7-1.xyz
+   cp2kneb2xyzmov.py $i/$i\-pos-Replica_nr_1-1.xyz $i/$i\-pos-Replica_nr_2-1.xyz $i/$i\-pos-Replica_nr_3-1.xyz $i/$i\-pos-Replica_nr_4-1.xyz $i/$i\-pos-Replica_nr_5-1.xyz $i/$i\-pos-Replica_nr_6-1.xyz $i/$i\-pos-Replica_nr_7-1.xyz
    mv trj.xyz $i\_neb.xyz
   fi
  fi
 done
-

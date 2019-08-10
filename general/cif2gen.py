@@ -1,12 +1,36 @@
-#!/p/home/teep/.local_programs/conda3/bin/python
+#!/usr/bin/env python3
 
-import ase, glob, os
-import ase.io
+'''
+usage: python3 cif2gen.py
 
-dir_ = os.getcwd()
+Uses ASE to convert a CIF format file to a DFTB+ gen format file.
+'''
 
-for file_ in glob.glob('%s/*.cif' % dir_):
-   filename_, fileext_ = os.path.splitext(file_) # fileext_ carries the .
-   inp_ = ase.io.read('%s%s' % (filename_, fileext_) , format='cif')
-   out_ = ase.io.write('%s.gen' % (filename_), inp_, format='gen')
+import pkg_resources
+import glob
+import os
+import sys
 
+from pkg_resources import DistributionNotFound, VersionConflict
+
+try:
+    pkg_resources.require("ase>=3.15.0") # pings recent ase
+except pkg_resources.DistributionNotFound:
+    print('Exiting: Atomic Simulation Environment not found.')
+    sys.exit()
+except pkg_resources.VersionConflict:
+    print('Exiting: Older version of ASE installed, please update.')
+    sys.exit()
+
+del sys.modules["pkg_resources"]
+del pkg_resources
+
+import ase
+from ase.io import read, write
+
+dir = os.getcwd()
+
+for file in glob.glob('%s/*.cif' % dir):
+   filename, fileext = os.path.splitext(infile) # fileext carries the .
+   inp = read('%s%s' % (filename, fileext) , format='cif')
+   out = write('%s.gen' % (filename), inp, format='gen')

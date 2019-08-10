@@ -1,4 +1,4 @@
 # README
 
-This folder contains ASE scripts for running calculations with VASP. They are labeled generally by the type of calculation.
-
+vasp/ folder contains some useful scripts for creating input decks and
+converting the OUTCAR to something more manageable in size.

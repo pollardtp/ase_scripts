@@ -1,19 +1,45 @@
-#!/p/home/teep/.local_programs/conda3/bin/python
+#!/usr/bin/env python3
 
-import ase, glob, os, subprocess
+'''
+usage: python3 cif2jdft.py
+
+Uses ASE to generate JDFTx input files from CIF format files.
+'''
+
+import pkg_resources
+import glob
+import os
+import subprocess
+import sys
+
+from pkg_resources import DistributionNotFound, VersionConflict
+
+try:
+    pkg_resources.require("ase>=3.15.0") # pings recent ase
+except pkg_resources.DistributionNotFound:
+    print('Exiting: Atomic Simulation Environment not found.')
+    sys.exit()
+except pkg_resources.VersionConflict:
+    print('Exiting: Older version of ASE installed, please update.')
+    sys.exit()
+
+del sys.modules["pkg_resources"]
+del pkg_resources
+
+import ase
+from ase.io import read, write
 from ase import Atom, Atoms
 from ase.calculators.JDFTx import JDFTx
-import ase.io
 
-dir_ = os.getcwd()
+dir = os.getcwd()
 
-for file_ in glob.glob('%s/*.cif' % dir_):
-    filename_, fileext_ = os.path.splitext(file_) # fileext_ carries the .
-    fileroot_ = os.path.basename(filename_) # grab just filename
-    inp_ = ase.io.read('%s%s' % (filename_, fileext_) , format='cif')
-    calc = JDFTx(executable='mpiexec -np 1 /p/home/teep/.local_programs/jdftx/bin/bin/jdftx', pseudoSet='GBRV', 
+for file in glob.glob('%s/*.cif' % dir):
+    filename, fileext = os.path.splitext(file) # fileext carries the .
+    fileroot = os.path.basename(filename) # grab just filename
+    inp = read('%s%s' % (filename, fileext) , format='cif')
+    calc = JDFTx(executable='mpiexec -np 1 /p/home/teep/.local_programs/jdftx/bin/bin/jdftx', pseudoSet='GBRV',
                  commands={
-                           'elec-ex-corr' : 'gga', 
+                           'elec-ex-corr' : 'gga',
                            'elec-cutoff'  : '200 1600', # geo - SSSP max 60 Ry, USPP rhocut is x8, latt is x2 of geo cutoff
                            'kpoint-folding' : '10 10 10',
                            'elec-smearing' : 'Fermi 0.002',
@@ -23,10 +49,9 @@ for file_ in glob.glob('%s/*.cif' % dir_):
                            'lattice-minimize' : 'nIterations 100 linminMethod Relax energyDiffThreshold 1e-7 knormThreshold 1e-4',
                           }
                 )
-    inp_.set_calculator(calc)
-    calc.update(inp_)
-    os.system('mkdir -p %s' % fileroot_)
-    os.system('cp in %s.cif %s' % (fileroot_, fileroot_))
-    os.system("sed s~'filename'~'%s'~g %s/jdftx.pbs > %s/jdftx.pbs" % (fileroot_, dir_, filename_)) # grab pbs script
+    inp.set_calculator(calc)
+    calc.update(inp)
+    os.system('mkdir -p %s' % fileroot)
+    os.system('cp in %s.cif %s' % (fileroot, fileroot))
+    os.system("sed s~'filename'~'%s'~g %s/jdftx.pbs > %s/jdftx.pbs" % (fileroot, dir, filename)) # grab pbs script
     os.system('rm in')
-
