@@ -15,7 +15,5 @@ import ase
 from ase.io import read, write
 from ase import build
 
-dir = os.getcwd()
-
 inp = read(sys.argv[1] , format='vasp')
 out = write(sys.argv[2], inp, format='xyz')
