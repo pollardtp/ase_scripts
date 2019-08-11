@@ -13,11 +13,12 @@ export PYTHONPATH=$PYTHONPATH:/p/home/$USER/.local_programs/asepylot/pylot_lite
 
 # command to update asepylot on all machines
 update_asepylot () {
- if [ -x $("command -v ssh-add") ]; then
+ ping=`pwd`
+ if [ -d $HOME/.local_programs/asepylot ]; then
   cd $HOME/.local_programs/asepylot
   git pull
- elif [ ! -x $("command -v ssh-add") ]; then
-  rm -rf $HOME/.local_programs/asepylot
+ else
   git clone https://github.com/pollardtp/asepylot.git $HOME/.local_programs/asepylot
  fi
+ cd $ping
 }
