@@ -1,6 +1,8 @@
 # README
 
-This folder contains input files for running different types of calculations with CP2K for metals and nonmetals alike. 
+Series of scripts to perform common tasks in CP2K.
 
-A PBS script for one machine is included here as well because we use the system installed CP2K module.
+dumpdcd is modified version of the CP2K file where I change the format of the 
+title line. TRAVIS (trajectory analyzer) can now read 
+`x-ang y-ang z-ang alpha-deg beta-deg gamma-deg` from the title card.
 
