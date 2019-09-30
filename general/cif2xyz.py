@@ -19,6 +19,6 @@ from ase.io import read, write
 dir = os.getcwd()
 
 for file in glob.glob('%s/*.cif' % dir):
-   filename, fileext = os.path.splitext(infile) # fileext carries the .
+   filename, fileext = os.path.splitext(file) # fileext carries the .
    inp = read('%s%s' % (filename, fileext) , format='cif')
    out = write('%s.xyz' % (filename), inp, format='xyz')
