@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 
 '''
-usage: python3 cp2kneb2xyzmov.py foo1.xyz foo2.xyz ... fooN.xyz
+usage: python3 xyz2g16.py
 
-CP2K writes each image in an NEB calculation to its own XYZ (XMOL) file.
-This script uses ASE to read each image in and output the final snapshot
-from each file to a single file called trj.xyz that shows the optimized
-path when viewed.
+Converts XYZ (XMOL) to Gaussian 16 file. Copy to local directory to modify theory.
 '''
 
 import glob

@@ -27,7 +27,7 @@ beta = sys.argv[5]
 gamma = sys.argv[6]
 
 for file in glob.glob('%s/*.xyz' % dir):
-   filename, fileext_ = os.path.splitext(file) # fileext carries the .
+   filename, fileext = os.path.splitext(file) # fileext carries the .
    inp = read('%s%s' % (filename, fileext) , format='xyz')
    inp.set_cell([a, b, c, alpha, beta, gamma])
    out = write('%s.pdb' % (filename), inp, format='proteindatabank')
