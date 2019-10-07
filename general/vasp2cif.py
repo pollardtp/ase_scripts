@@ -19,7 +19,7 @@ from ase.io import read, write
 dir = os.getcwd()
 
 for file in glob.glob('%s/*.vasp' % dir):
-   filename, fileext = os.path.splitext(infile) # fileext carries the .
+   filename, fileext = os.path.splitext(file) # fileext carries the .
    inp = read('%s%s' % (filename, fileext) , format='vasp')
    out = write('%s.cif' % (filename), inp, format='cif')
 
