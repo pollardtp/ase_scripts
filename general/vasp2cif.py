@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 '''
-usage: python3 gen2cif.py
+usage: python3 vasp2cif.py
 
-Uses ASE to convert a DFTB+ gen format file to a CIF format file.
+Uses ASE to convert a vasp POSCAR to CIF.
 '''
 
 import glob
@@ -18,8 +18,8 @@ from ase.io import read, write
 
 dir = os.getcwd()
 
-for file in glob.glob('%s/*.gen' % dir):
+for file in glob.glob('%s/*.vasp' % dir):
    filename, fileext = os.path.splitext(file) # fileext carries the .
-   inp = read('%s%s' % (filename, fileext) , format='gen')
+   inp = read('%s%s' % (filename, fileext) , format='vasp')
    out = write('%s.cif' % (filename), inp, format='cif')
 
