@@ -26,7 +26,7 @@ for file in glob.glob('%s/*-pos-*.xyz' % dir):
    filename, fileext = os.path.splitext(file)
    fileroot, filescrap = filename.split('-pos')
    trj = read('%s%s' % (filename, fileext) , format='xyz', index=':')
-   cel = np.loadtxt('%s.cell' % (fileroot), usecols=range(2,8), dtype=np.double)
+   cel = np.loadtxt('%s-1.cell' % (fileroot), usecols=range(2,8), dtype=np.double)
    nframes = len(trj)
    for frame in range(nframes):
       trj[frame].set_cell([ cel[frame][0], cel[frame][1], cel[frame][2], cel[frame][3], cel[frame][4], cel[frame][5] ])
