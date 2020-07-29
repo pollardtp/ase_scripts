@@ -10,9 +10,6 @@ import glob
 import os
 import sys
 
-from require import check_ase
-check_ase()
-
 import ase
 from ase.io import read, write
 
@@ -22,4 +19,3 @@ for file in glob.glob('%s/*.gen' % dir):
    filename, fileext = os.path.splitext(file) # fileext carries the .
    inp = read('%s%s' % (filename, fileext) , format='gen')
    out = write('%s.cif' % (filename), inp, format='cif')
-

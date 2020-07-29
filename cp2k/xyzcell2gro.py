@@ -12,9 +12,6 @@ import os
 import sys
 import numpy as np
 
-from require import check_ase
-check_ase()
-
 import ase
 from ase.io import read, write
 
@@ -29,9 +26,8 @@ for file in glob.glob('%s/*-pos-*.xyz' % dir):
    cel = np.loadtxt('%s-1.cell' % (fileroot), usecols=range(2,11), dtype=np.double)
    nframes = len(trj)
    for frame in range(nframes):
-      trj[frame].set_cell([(cel[frame][0], cel[frame][1], cel[frame][2]), 
-                           (cel[frame][3], cel[frame][4], cel[frame][5]), 
+      trj[frame].set_cell([(cel[frame][0], cel[frame][1], cel[frame][2]),
+                           (cel[frame][3], cel[frame][4], cel[frame][5]),
                            (cel[frame][6], cel[frame][7], cel[frame][8])])
       trj[frame].set_pbc([True, True, True])
       write('%s.g96' % (fileroot), trj[frame], format='gromos', append=True)
-

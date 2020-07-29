@@ -8,8 +8,5 @@ calculations.
 
 Source is written with the following practices,
 
-1) Python3
-2) Standardized header, always checks for ASE >= 3.15.0 (ca. 2017)
-3) Where reasonable, uses glob to run over all files of same type in directory
-4) Halloween commit
-
+1) Python3 syntax
+2) Generally uses glob to loop over files by set extension, may seek to generalize in the future.

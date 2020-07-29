@@ -11,9 +11,6 @@ path when viewed.
 
 import sys
 
-from require import check_ase
-check_ase()
-
 import ase
 from ase.io import read, write
 

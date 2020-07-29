@@ -11,9 +11,6 @@ import os
 import subprocess
 import sys
 
-from require import check_ase
-check_ase()
-
 import ase
 from ase.io import read, write
 from ase import Atom, Atoms

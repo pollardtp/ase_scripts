@@ -11,9 +11,6 @@ import glob
 import os
 import sys
 
-from require import check_ase
-check_ase()
-
 import ase
 from ase.io import read, write
 from ase import build
@@ -31,4 +28,3 @@ fileroot, filescrap = filename.split('-trim') # second part is useless now
 inp = read('%s%s' % (filename, fileext) , format='xyz')
 inp.set_cell([a, b, c, alpha, beta, gamma])
 out = write('%s-opt.vasp' % (fileroot), inp, format='vasp', direct=True, sort=True, vasp5=True)
-
