@@ -167,7 +167,7 @@ PROGRAM dumpdcd
                                       "(an integer number greater than zero is expected)")
     CASE ("-help","-h")
       CALL print_help()
-      STOP 
+      STOP
     CASE ("-info","-i")
       info = .TRUE.
       CYCLE dcd_file_loop
@@ -689,10 +689,18 @@ PROGRAM dumpdcd
                 END DO
               END IF
             ELSE
-              IF (output_format_xmol) THEN
+            IF (output_format_xmol) THEN
+                ! Modification (orig, nvt dump cell, npt dump cell)
+              IF (traj_typ == "def") THEN
                 WRITE (UNIT=output_unit,FMT="(T2,I0,/,A,2(I0,A))")&
-                !  natom_dcd,"Frame: ",nframe_read + 1,", Step: ",nframe,", "//TRIM(remark_xyz)
-                  natom_dcd,TRIM(remark_xyz)
+                natom_dcd,"Frame: ",nframe_read + 1,", Step: ",nframe,", "//TRIM(remark_xyz)
+              ELSE IF (traj_typ == "nvt") THEN
+                WRITE (UNIT=output_unit,FMT="(T2,I0,/,A,2(I0,A))")&
+                natom_dcd,TRIM(remark_xyz)
+              ELSE IF (traj_typ == "npt") THEN
+                WRITE (UNIT=output_unit,FMT="(T2,I0,/6(F10.7,X))")&
+                natom_dcd, a, b, c, alpha, beta, gamma
+              END IF
                 DO iatom=1,natom_dcd
                   WRITE (UNIT=output_unit,FMT=fmt_string) ADJUSTL(atomic_label(iatom)),r(iatom,1:3)
                 END DO
