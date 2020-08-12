@@ -53,6 +53,7 @@ PROGRAM dumpdcd
                               massunit = 1822.88484264550_dp             ! [u]    -> [a.u.]
 
   ! Variables
+  CHARACTER(LEN=3)                                   :: traj_typ
   CHARACTER(LEN=4)                                   :: id_dcd
   CHARACTER(LEN=10)                                  :: unit_string
   CHARACTER(LEN=17)                                  :: fmt_string
@@ -690,7 +691,7 @@ PROGRAM dumpdcd
               END IF
             ELSE
             IF (output_format_xmol) THEN
-                ! Modification (orig, nvt dump cell, npt dump cell)
+                ! Modification (def, nvt dump cell, npt dump cell)
               IF (traj_typ == "def") THEN
                 WRITE (UNIT=output_unit,FMT="(T2,I0,/,A,2(I0,A))")&
                 natom_dcd,"Frame: ",nframe_read + 1,", Step: ",nframe,", "//TRIM(remark_xyz)
