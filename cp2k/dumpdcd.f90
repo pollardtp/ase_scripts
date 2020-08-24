@@ -78,6 +78,7 @@ PROGRAM dumpdcd
   REAL(KIND=sp), DIMENSION(:,:), ALLOCATABLE         :: r
   REAL(KIND=dp), DIMENSION(:,:), ALLOCATABLE         :: r_pbc,r0,s,s_pbc
 
+  traj_typ = "npt"
   apply_pbc = .FALSE.
   pbc0 = .FALSE.
   debug = .FALSE.
@@ -699,7 +700,7 @@ PROGRAM dumpdcd
                 WRITE (UNIT=output_unit,FMT="(T2,I0,/,A,2(I0,A))")&
                 natom_dcd,TRIM(remark_xyz)
               ELSE IF (traj_typ == "npt") THEN
-                WRITE (UNIT=output_unit,FMT="(T2,I0,/6(F10.7,X))")&
+                WRITE (UNIT=output_unit,FMT="(T2,I0,/6(F10.6,X))")&
                 natom_dcd, a, b, c, alpha, beta, gamma
               END IF
                 DO iatom=1,natom_dcd
