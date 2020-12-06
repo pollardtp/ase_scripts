@@ -12,33 +12,26 @@ if [ ! -f pdb2sort.py ]; then
     fi
   
     # case: too much space, no trailing characters - if sorted with ASE no changes
-    if grep -q "[OHil]   MOL" $file\.pdb; then
-      sed -i s~"O   MOL"~" O  MOL"~g $file\.pdb
-      sed -i s~"H   MOL"~" H  MOL"~g $file\.pdb
-      sed -i s~"Li   MOL"~" Li  MOL"~g $file\.pdb
-      sed -i s~"Cl   MOL"~" Cl  MOL"~g $file\.pdb
+    if grep -q "[OH]   HOH" $file\.pdb; then
+      sed -i s~"O   HOH"~" O  MOL"~g $file\.pdb
+      sed -i s~"H   HOH"~" H  MOL"~g $file\.pdb
     fi
   
     # case: trailing characters mess up spacing, first charcater is a number - if sorted with ASE no changes
-    if grep -q "[OHil][0-9].* MOL" $file\.pdb; then
-      sed -i s~"O[0-9].* MOL"~" O  MOL"~g $file\.pdb
-      sed -i s~"H[0-9].* MOL"~" H  MOL"~g $file\.pdb
-      sed -i s~"Li[0-9].* MOL"~" Li  MOL"~g $file\.pdb
-      sed -i s~"Cl[0-9].* MOL"~" Cl  MOL"~g $file\.pdb
+    if grep -q "[NL]   LiG" $file\.pdb; then
+      sed -i s~"Zn   LiG"~" Zn  MOL"~g $file\.pdb
+      sed -i s~"Cl   LiG"~" Cl  MOL"~g $file\.pdb
     fi
   
     # generate xyz
-    ~/.local_programs/tinker.oleg/bin/pdbxyz $file\.pdb amoddedbabio18.prm
+    ~/.local_programs/tinker8.6/bin/pdbxyz $file\.pdb ../params/amoddedbabio18_refitDec2020.prm
   
-    sed -i s~"LI"~"Li"~g $file\.xyz
-    sed -i s~"CL"~"Cl"~g $file\.xyz
-    sed -i s~"ZN"~"Zn"~g $file\.xyz
     mv $file\.xyz $file\.xyz_orig
     ./set_tink_atom_type.sh $file\.xyz_orig > $file\.xyz
     boxbox=`grep CRYST1 $file\.pdb | awk '{print $2}'`
     boxboy=`grep CRYST1 $file\.pdb | awk '{print $3}'`
     boxboz=`grep CRYST1 $file\.pdb | awk '{print $4}'`
-    sed s~"BOXBOX"~"$boxbox"~g generic.key | sed s~"BOXBOY"~"$boxboy"~g | sed s~"BOXBOZ"~"$boxboz"~g > $file\.key
+    #sed s~"BOXBOX"~"$boxbox"~g generic.key | sed s~"BOXBOY"~"$boxboy"~g | sed s~"BOXBOZ"~"$boxboz"~g > $file\.key
     #tar cf $file\.tar $file\.xyz $file\.key
   done
 fi
@@ -52,17 +45,17 @@ if [ -f pdb2sort.py ]; then
     file=`echo ${x##*/}`
 
     # generate xyz
-    ~/.local_programs/tinker.oleg/bin/pdbxyz $file\-sorted.pdb amoddedbabio18.prm
+    ~/.local_programs/tinker8.6/bin/pdbxyz $file\-sorted.pdb ../params/amoddedbabio18_refitDec2020.prm
 
-    sed -i s~"LI"~"Li"~g $file\-sorted.xyz
-    sed -i s~"CL"~"Cl"~g $file\-sorted.xyz
-    sed -i s~"ZN"~"Zn"~g $file\-sorted.xyz
+    sed -i s~"Li"~"Li"~g $file\-sorted.xyz
+    sed -i s~"Cl"~"Cl"~g $file\-sorted.xyz
+    sed -i s~"Zn"~"Zn"~g $file\-sorted.xyz
     mv $file\-sorted.xyz $file\.xyz_orig
     ./set_tink_atom_type.sh $file\.xyz_orig > $file\.xyz
     boxbox=`grep CRYST1 $file\.pdb | awk '{print $2}'`
     boxboy=`grep CRYST1 $file\.pdb | awk '{print $3}'`
     boxboz=`grep CRYST1 $file\.pdb | awk '{print $4}'`
-    sed s~"BOXBOX"~"$boxbox"~g generic.key | sed s~"BOXBOY"~"$boxboy"~g | sed s~"BOXBOZ"~"$boxboz"~g > $file\.key
+    #sed s~"BOXBOX"~"$boxbox"~g generic.key | sed s~"BOXBOY"~"$boxboy"~g | sed s~"BOXBOZ"~"$boxboz"~g > $file\.key
     #tar cf $file\.tar $file\.xyz $file\.key
   done
 fi

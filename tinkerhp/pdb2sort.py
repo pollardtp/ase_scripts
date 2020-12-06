@@ -14,7 +14,7 @@ import sys
 import ase
 from ase.io import read, write
 from ase.build import sort
-from ase import Atom, Atoms, neighborlist
+from ase import Atom, Atoms, neighborlist, build
 
 dir = os.getcwd()
 
@@ -34,19 +34,19 @@ for file in glob.glob('%s/*.pdb' % dir):
     inp_clean = sort(inp, tags = inp.get_masses())
 
     # compute distances, save lists of indices - i_dex contains O and H
-    i_dex, j_dex, ij_dis = neighborlist.neighbor_list('ijd', inp_clean, {('H', 'H'): 0.0, ('O', 'O'): 0.0, ('O', 'H'): 0.9}, self_interaction=False)
+    i_dex, j_dex, ij_dis = neighborlist.neighbor_list('ijd', inp_clean, {('H', 'H'): 0.0, ('O', 'O'): 0.0, ('O', 'H'): 1.1}, self_interaction=False)
 
     # tag each water with the index of the oxygen, the ith water
     for ith in range(len(i_dex)):
-        if ( inp_clean_[i_dex[ith]].symbol == 'O' ):
-            inp_clean_[i_dex[ith]].tag = i_dex[ith]
-            inp_clean_[j_dex[ith]].tag = i_dex[ith]
+        if ( inp_clean[i_dex[ith]].symbol == 'O' ):
+            inp_clean[i_dex[ith]].tag = i_dex[ith]
+            inp_clean[j_dex[ith]].tag = i_dex[ith]
 
     # tag the other atoms, just number them in the order you want to see them
     for atom in inp_clean:
         if ( atom.symbol == 'Cl' ):
             atom.tag = 9999998
-        if ( atom.symbol == 'Li' ):
+        if ( atom.symbol == 'Zn' ):
             atom.tag = 9999999
 
     # sort the reindexed list by water molecule - now H index is > O index, proper order!
